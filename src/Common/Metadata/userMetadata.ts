@@ -1,0 +1,13 @@
+export class user {
+  public _id: string = "";
+  public firstName: string = "";
+  public lastName: string = "";
+  public userName: string = "";
+  public password: string = "";
+  public email: string = "";
+  public postalCode: string = "";
+  public region: string = "";
+  public phone: string = "";
+  public address: string = "";
+  public city: string = "";
+}
