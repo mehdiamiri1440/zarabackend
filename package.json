@@ -19,7 +19,7 @@
     "@types/node": "^6.0.46",
     "@types/uuid": "^3.4.4",
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "cassandra-driver": "^3.5.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",

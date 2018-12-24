@@ -3,12 +3,7 @@ var ejs = require("ejs");
 var fs = require("fs");
 
 export class EmailManager {
-  static sendEMail(
-    email: string,
-    subject: string,
-    body: string,
-    attachments?: any
-  ) {
+  sendEMail(email: string, subject: string, body: string, attachments?: any) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SMTP_ADDRESS,
@@ -37,7 +32,7 @@ export class EmailManager {
     });
   }
 
-  static sendEMailByTemplate(
+  sendEMailByTemplate(
     template: string,
     email: string,
     subject: string,

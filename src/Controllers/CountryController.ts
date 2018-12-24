@@ -13,7 +13,7 @@ export class CountryController extends BaseRouter {
   }
 
   get(req: Request, res: Response, next: NextFunction) {
-    var manager = new CountryManager();
+    let manager = new CountryManager();
     manager.get(function(err, result) {
       if (err) res.status(500).send({ error: err });
       else res.send(result);

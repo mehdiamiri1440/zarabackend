@@ -1,16 +1,22 @@
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
+import { hash, genSaltSync, compareSync } from "bcryptjs";
+const salt = genSaltSync(10);
 export class Security {
-  static hashText(text: string, callback: (error: any, result: any) => void) {
-    bcrypt.hash(text, saltRounds, callback);
+  generatePassword() {
+    let password = "",
+      possible =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 8; i++)
+      password += possible.charAt(Math.floor(Math.random() * possible.length));
+    return password;
   }
-
-  static compareHash(
-    text: string,
-    hash: string,
-    callback: (error: any, result: any) => void
-  ) {
-    bcrypt.compare(text, hash, callback);
+  hashText(text: string) {
+    return new Promise((resolve, reject) => {
+      hash(text, salt).then(hashedText => {
+        resolve(hashedText);
+      });
+    });
+  }
+  compareText(text: string, hashedText: string) {
+    return compareSync(text, hashedText);
   }
 }

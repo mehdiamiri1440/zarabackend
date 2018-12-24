@@ -6,8 +6,8 @@ export class UserManager extends BaseRepository<user> {
     super("user");
   }
 
-  login(username: string, callback: (error: any, result: any) => void) {
-    this.find({ username: username }, callback);
+  getUserByEmail(email: string, callback: (error: any, result: any) => void) {
+    this.find({ email: email }, callback);
   }
   signup(user: user, callback: (error: any, result: any) => void) {
     this.create(user, callback);
@@ -20,8 +20,9 @@ export class UserManager extends BaseRepository<user> {
     this.find({ email: email }, (error, result) => {
       if (error) callback(error, result);
       else {
-        result.password = password;
-        this.update(result, callback);
+        console.log(result[0].password, password);
+        result[0].password = password;
+        this.update(result[0], callback);
       }
     });
   }
