@@ -2,14 +2,24 @@ var cors = require("cors");
 import * as express from "express";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
+
+import * as busboy from "connect-busboy"; //middleware for form/file upload
+import * as path from "path"; //used for file path
+
 import "reflect-metadata";
+
+var fileUpload = require("express-fileupload");
 
 // Controllers
 import CountryController from "./Controllers/CountryController";
 import UserController from "./Controllers/UserController";
+import CategoryController from "./Controllers/CategoryController";
+import ProductController from "./Controllers/ProductController";
+import ShoppingBasketController from "./Controllers/ShoppingBasketController";
 
 // Services
 import { Permission } from "./Repositories/Utility/Permission";
+import { FileController } from "./Controllers/FileUpload";
 
 export class App {
   // ref to Express instance
@@ -30,6 +40,11 @@ export class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(Permission.getAuth);
     this.express.use(
+      fileUpload({
+        limits: { fileSize: 30 * 1024 * 1024 }
+      })
+    );
+    this.express.use(
       Permission.getGlobalBruteForce.getMiddleware({
         key: function(req, res, next) {
           // prevent too many attempts for the same username
@@ -37,6 +52,9 @@ export class App {
         }
       })
     );
+
+    this.express.use(busboy());
+    this.express.use(express.static(path.join(__dirname, "public")));
   }
 
   // Configure API endpoints.
@@ -45,6 +63,10 @@ export class App {
     this.express.use("/", router);
     this.express.use("/country", CountryController);
     this.express.use("/user", UserController);
+    this.express.use("/shoppingBasket", ShoppingBasketController);
+    this.express.use("/category", CategoryController);
+    this.express.use("/product", ProductController);
+    this.express.use("/doument", FileController);
   }
 }
 
