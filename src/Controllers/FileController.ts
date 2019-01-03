@@ -28,7 +28,6 @@ export class FileController {
         );
       });
     }
-    console.log("aaaaaaaaaa");
   }
 }
 const fileController = new FileController();
