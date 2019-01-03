@@ -19,7 +19,7 @@ import ShoppingBasketController from "./Controllers/ShoppingBasketController";
 
 // Services
 import { Permission } from "./Repositories/Utility/Permission";
-import { FileController } from "./Controllers/FileUpload";
+import { FileController } from "./Controllers/FileController";
 
 export class App {
   // ref to Express instance
