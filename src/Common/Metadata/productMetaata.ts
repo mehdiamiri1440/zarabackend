@@ -6,7 +6,10 @@ export class product {
   public color: Array<string> = [];
   public size: Array<string> = [];
   public price: string = "";
-  public categoryCode: string = "";
+  public categoryName: string = "";
+  public isNew: boolean = false;
+  public hashTag: Array<string> = [];
+  public registerDate: number = Date.now();
 }
 
 export class shoppingCartProduct extends product {

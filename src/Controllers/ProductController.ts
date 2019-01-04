@@ -9,13 +9,13 @@ export class ProductController extends BaseRouter {
 
   init() {
     super.init();
-    this.router.get("/getByCategoryCode", this.getByCategoryCode);
+    this.router.get("/getByCategoryName", this.getByCategoryName);
     this.router.get("/search", this.search);
   }
 
-  getByCategoryCode(req: Request, res: Response, next: NextFunction) {
+  getByCategoryName(req: Request, res: Response, next: NextFunction) {
     let manager = new ProductManager();
-    manager.getByCategory(req.body.categoryCode, function(err, result) {
+    manager.getByCategory(req.body.categoryName, function(err, result) {
       if (err) res.status(500).send({ error: err });
       else res.send(result);
     });
@@ -25,6 +25,16 @@ export class ProductController extends BaseRouter {
     manager.search(req.body.phrase, function(err, result) {
       if (err) res.status(500).send({ error: err });
       else res.send(result);
+    });
+  }
+  getIsNew(req: Request, res: Response, next: NextFunction) {
+    let manager = new ProductManager();
+    manager.getIsNew((err, result) => {
+      if (err) res.status(500).send({ error: err });
+      else if (result.length > 0) {
+        result.sort((a, b) => a.Date - b.Date);
+        res.send(result.slice(0, 10));
+      } else res.status(500).send({ error: "No product found" });
     });
   }
 }

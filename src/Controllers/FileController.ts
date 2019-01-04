@@ -1,29 +1,31 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { FileManager } from "../Logic/Managers/FileManager";
 import * as uuidv1 from "uuid/v1";
-export class FileController {
-  router: Router;
+import { BaseRouter } from "../Repositories/Utility/BaseRouter";
+var fs = require("fs");
+export class FileController extends BaseRouter {
   constructor() {
-    this.router = Router();
-    this.init();
+    super(FileManager);
   }
 
   init() {
-    this.router.post("/", this.uploadFile);
+    super.init();
+    this.router.post("/upload", this.uploadFile);
   }
 
   uploadFile(req: Request, res: Response, next: NextFunction) {
     var manager = new FileManager();
     if (req["files"]) {
-      let sampleFile = req["files"][Object.keys(req["files"])[0]];
-      let filename = uuidv1();
-      manager.create({ _id: "", guid: filename }, (res, err) => {
-        if (err) return res.status(500).send(err);
-        sampleFile.mv(
-          `${process.env.FILE_SAVE_URL}/UploadedFiles/${filename}.jpg`,
+      let sampleFile = req["files"][Object.keys(req["files"])[0]],
+        filename = uuidv1();
+      manager.create({ _id: "", guid: filename }, (err, result) => {
+        if (err) return res.status(500).send({ error: err, a: "qweqwe" });
+        fs.writeFile(
+          `${process.env.FILE_SAVE_URL}/UploadFiles/${filename}.jpg`,
+          new Uint8Array(Buffer.from(sampleFile.data)),
           function(err) {
-            if (err) return res.status(500).send(err);
-            res.send(filename);
+            if (err) return res.status(500).send({ error: err, a: "zxczxc" });
+            res.send({ filename });
           }
         );
       });

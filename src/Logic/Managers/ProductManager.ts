@@ -7,13 +7,16 @@ export class ProductManager extends BaseRepository<product> {
   }
 
   getByCategory(
-    categoryCode: string,
+    categoryName: string,
     callback: (error: any, result: any) => void
   ) {
-    this.find({ categoryCode: categoryCode }, callback);
+    this.find({ categoryName: categoryName }, callback);
   }
   search(phrase: string, callback: (error: any, result: any) => void) {
     this.find({ name: new RegExp(".*" + phrase + ".*") }, callback);
+  }
+  getIsNew(callback: (error: any, result: any) => void) {
+    this.find({ isNew: true }, callback);
   }
 }
 Object.seal(ProductManager);
