@@ -19,12 +19,12 @@ export class FileController extends BaseRouter {
       let sampleFile = req["files"][Object.keys(req["files"])[0]],
         filename = uuidv1();
       manager.create({ _id: "", guid: filename }, (err, result) => {
-        if (err) return res.status(500).send({ error: err, a: "qweqwe" });
+        if (err) return res.status(500).send({ error: err });
         fs.writeFile(
           `${process.env.FILE_SAVE_URL}/UploadFiles/${filename}.jpg`,
           new Uint8Array(Buffer.from(sampleFile.data)),
           function(err) {
-            if (err) return res.status(500).send({ error: err, a: "zxczxc" });
+            if (err) return res.status(500).send({ error: err });
             res.send({ filename });
           }
         );
