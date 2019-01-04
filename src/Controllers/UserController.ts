@@ -32,16 +32,33 @@ export class CountryController extends BaseRouter {
   }
   signup(req: Request, res: Response, next: NextFunction) {
     let manager = new UserManager(),
-      securityManager = new Security();
-    securityManager
-      .hashText(req.body.password)
-      .then((hashedPassword: string) => {
-        req.body.password = hashedPassword;
-        manager.signup(req.body, function(err, result) {
-          if (err) res.status(500).send({ error: err });
-          else res.send(result);
-        });
-      });
+      error = [];
+    if (req.body.password.length < 8) error.push("Password is too short");
+    if (req.body.username.length < 8) error.push("Username is too short");
+    manager.find({ $or: [{ username: "" }, { email: "" }] }, function(
+      err,
+      result
+    ) {
+      if (err) res.status(500).send({ error: err });
+      else if (result.length > 0) {
+        if (req.body.username === result[0].username)
+          error.push("Duplicated Username");
+        if (req.body.email === result[0].email) error.push("Duplicated Email");
+        res.status(500).send({ error });
+      } else {
+        if (error.length > 0) res.status(500).send(error);
+        let securityManager = new Security();
+        securityManager
+          .hashText(req.body.password)
+          .then((hashedPassword: string) => {
+            req.body.password = hashedPassword;
+            manager.signup(req.body, function(err, result) {
+              if (err) res.status(500).send({ error: err });
+              else res.send(result);
+            });
+          });
+      }
+    });
   }
   resetPassword(req: Request, res: Response, next: NextFunction) {
     let manager = new UserManager(),

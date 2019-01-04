@@ -16,10 +16,10 @@ import UserController from "./Controllers/UserController";
 import CategoryController from "./Controllers/CategoryController";
 import ProductController from "./Controllers/ProductController";
 import ShoppingBasketController from "./Controllers/ShoppingBasketController";
+import FileController from "./Controllers/FileController";
 
 // Services
 import { Permission } from "./Repositories/Utility/Permission";
-import { FileController } from "./Controllers/FileController";
 
 export class App {
   // ref to Express instance
@@ -66,7 +66,7 @@ export class App {
     this.express.use("/shoppingBasket", ShoppingBasketController);
     this.express.use("/category", CategoryController);
     this.express.use("/product", ProductController);
-    this.express.use("/doument", FileController);
+    this.express.use("/document", FileController);
   }
 }
 
