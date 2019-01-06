@@ -8,6 +8,6 @@ export class user {
   public postalCode: string = "";
   public region: string = "";
   public phone: string = "";
-  public address: string = "";
+  public address: Array<string> = [];
   public city: string = "";
 }

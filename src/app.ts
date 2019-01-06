@@ -17,6 +17,7 @@ import CategoryController from "./Controllers/CategoryController";
 import ProductController from "./Controllers/ProductController";
 import ShoppingBasketController from "./Controllers/ShoppingBasketController";
 import FileController from "./Controllers/FileController";
+import CarouselController from "./Controllers/CarouselController";
 
 // Services
 import { Permission } from "./Repositories/Utility/Permission";
@@ -67,6 +68,7 @@ export class App {
     this.express.use("/category", CategoryController);
     this.express.use("/product", ProductController);
     this.express.use("/document", FileController);
+    this.express.use("/carousel", CarouselController);
   }
 }
 

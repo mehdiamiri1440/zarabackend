@@ -4,4 +4,5 @@ export class shoppingBasket {
   public productIds: Array<shoppingCartProduct> = [];
   public userId: string = "";
   public trackingCode: string = "";
+  public status: string = "";
 }

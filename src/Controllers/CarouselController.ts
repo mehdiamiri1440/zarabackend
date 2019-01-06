@@ -9,10 +9,10 @@ export class CategoryController extends BaseRouter {
 
   init() {
     super.init();
-    this.router.post("/getShowenCarousels", this.getShowenCarousels);
+    this.router.get("/getShownCarousels", this.getShownCarousels);
   }
 
-  getShowenCarousels(req: Request, res: Response, next: NextFunction) {
+  getShownCarousels(req: Request, res: Response, next: NextFunction) {
     let manager = new CarouselManager();
     manager.find({ show: true }, (error, result) => {
       if (error) res.status(500).send({ error });

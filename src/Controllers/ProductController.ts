@@ -9,13 +9,30 @@ export class ProductController extends BaseRouter {
 
   init() {
     super.init();
-    this.router.get("/getByCategoryName", this.getByCategoryName);
+    this.router.get("/getByCategoryName/:categoryName", this.getByCategoryName);
     this.router.get("/search", this.search);
+    this.router.get("/itemDetail", this.itemDetail);
+    this.router.get("/getIsNew", this.getIsNew);
+  }
+
+  itemDetail(req: Request, res: Response, next: NextFunction) {
+    let manager = new ProductManager();
+    manager.find({ _id: req.body._id, isAvailable: true }, (err, product) => {
+      if (err || product.length === 0) res.status(500).send({ error: err });
+      product = product[0];
+      manager.find(
+        { hashTag: product.hashTag, isAvailable: true },
+        (err, similarProducts) => {
+          if (err) res.status(500).send({ error: err });
+          res.send({ product, similarProducts });
+        }
+      );
+    });
   }
 
   getByCategoryName(req: Request, res: Response, next: NextFunction) {
     let manager = new ProductManager();
-    manager.getByCategory(req.body.categoryName, function(err, result) {
+    manager.getByCategory(req.params.categoryName, function(err, result) {
       if (err) res.status(500).send({ error: err });
       else res.send(result);
     });

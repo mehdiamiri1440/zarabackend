@@ -1,7 +1,7 @@
 export class product {
   public _id: string = "";
   public name: string = "";
-  public image: Array<string> = [];
+  public images: Array<string> = [];
   public decription: string = "";
   public color: Array<string> = [];
   public size: Array<string> = [];
@@ -10,6 +10,7 @@ export class product {
   public isNew: boolean = false;
   public hashTag: Array<string> = [];
   public registerDate: number = Date.now();
+  public isAvailable: boolean = true;
 }
 
 export class shoppingCartProduct extends product {
