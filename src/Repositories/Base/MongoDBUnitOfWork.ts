@@ -80,7 +80,8 @@ export class MongoDBUnitOfWork<T> implements IUnitOfWork<T> {
     callback: (error: any, result: any) => void
   ) {
     this._collection.collection(tableName, function(err, collection) {
-      collection.deleteMany({ id: { $in: id } }).then(function(result, err) {
+      for (let i in id) id[i] = ObjectId(id[i]);
+      collection.deleteMany({ _id: { $in: id } }).then(function(result, err) {
         callback(err, result.result);
       });
     });

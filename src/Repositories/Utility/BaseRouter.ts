@@ -68,9 +68,8 @@ export class BaseRouter {
       res.send(result);
     });
   }
-  
 
-  login(req: Request, res: Response, next: NextFunction){
+  login(req: Request, res: Response, next: NextFunction) {
     console.log("ewfefw");
     res.send("ewfewf");
   }
