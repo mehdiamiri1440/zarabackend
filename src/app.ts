@@ -45,14 +45,14 @@ export class App {
         limits: { fileSize: 30 * 1024 * 1024 }
       })
     );
-    this.express.use(
-      Permission.getGlobalBruteForce.getMiddleware({
-        key: function(req, res, next) {
-          // prevent too many attempts for the same username
-          next(req.url);
-        }
-      })
-    );
+    // this.express.use(
+    //   Permission.getGlobalBruteForce.getMiddleware({
+    //     key: function(req, res, next) {
+    //       // prevent too many attempts for the same username
+    //       next(req.url);
+    //     }
+    //   })
+    // );
 
     this.express.use(busboy());
     this.express.use(express.static(path.join(__dirname, "public")));
