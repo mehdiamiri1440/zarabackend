@@ -10,9 +10,9 @@ export class ProductController extends BaseRouter {
   init() {
     super.init();
     this.router.get("/getByCategoryName/:categoryName", this.getByCategoryName);
-    this.router.post("/search", this.search);
     this.router.get("/itemDetail", this.itemDetail);
     this.router.get("/getIsNew", this.getIsNew);
+    this.router.post("/search", this.search);
   }
 
   itemDetail(req: Request, res: Response, next: NextFunction) {

@@ -20,7 +20,6 @@ export class UserManager extends BaseRepository<user> {
     this.find({ email: email }, (error, result) => {
       if (error) callback(error, result);
       else {
-        console.log(result[0].password, password);
         result[0].password = password;
         this.update(result[0], callback);
       }

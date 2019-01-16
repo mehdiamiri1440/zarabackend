@@ -11,7 +11,8 @@ var server;
 var port;
 (async function() {
   await DataAccess.test();
-  port = normalizePort(process.env.PORT || 3000);
+  // port = normalizePort(process.env.PORT || 3000);
+  port = 3005;
   App.set("port", port);
   server = http.createServer(App);
   server.listen(port);

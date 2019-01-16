@@ -57,6 +57,7 @@ export class BaseRouter {
 
   update(that: any, req: Request, res: Response, next: NextFunction) {
     var manager = new that.controllerType();
+    console.log("req.body:", req.body);
     manager.update(req.body, function(err, result) {
       res.send(result);
     });

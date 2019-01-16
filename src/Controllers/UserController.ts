@@ -14,11 +14,14 @@ export class CountryController extends BaseRouter {
     this.router.post("/login", this.login);
     this.router.post("/signup", this.signup);
     this.router.post("/resetpassword", this.resetPassword);
+    this.router.post("/search", this.search);
   }
   login(req: Request, res: Response, next: NextFunction) {
     let manager = new UserManager();
     manager.getUserByEmail(req.body.email, function(err, result) {
       if (err) res.status(500).send({ error: err });
+      else if (result.length === 0)
+        res.status(500).send({ error: "Wrong email or password" });
       else {
         let securityManager = new Security();
         if (
@@ -61,6 +64,25 @@ export class CountryController extends BaseRouter {
     });
   }
   resetPassword(req: Request, res: Response, next: NextFunction) {
+    let manager = new UserManager(),
+      securityManager = new Security(),
+      password = securityManager.generatePassword();
+    securityManager.hashText(password).then((hashedPassword: string) => {
+      manager.resetPassword(req.body.email, hashedPassword, function(
+        err,
+        result
+      ) {
+        if (err) res.status(500).send({ error: err });
+        else {
+          let emailManager = new EmailManager();
+          emailManager.sendEMail(req.body.email, "Reset Password", "asdasdasd");
+          res.send(result);
+        }
+      });
+    });
+  }
+
+  search(req: Request, res: Response, next: NextFunction) {
     let manager = new UserManager(),
       securityManager = new Security(),
       password = securityManager.generatePassword();

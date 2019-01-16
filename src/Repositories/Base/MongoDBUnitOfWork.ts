@@ -63,11 +63,13 @@ export class MongoDBUnitOfWork<T> implements IUnitOfWork<T> {
     callback: (error: any, result: any) => void
   ) {
     this._collection.collection(tableName, function(err, collection) {
+      console.log(entity);
       entity.forEach(function(val, index) {
+        console.log(val);
         let id = (<any>val)["_id"];
         delete (<any>val)["_id"];
         collection
-          .update({ _id: ObjectId(id) }, val)
+          .update({ _id: ObjectId(id) }, { $set: val })
           .then(function(result, err) {
             callback(err, result.result);
           });
