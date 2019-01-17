@@ -15,6 +15,19 @@ export class CountryController extends BaseRouter {
     this.router.post("/signup", this.signup);
     this.router.post("/resetpassword", this.resetPassword);
     this.router.post("/search", this.search);
+    this.router.get("/showme", this.showMe);
+    this.router.get("/isuserlogin", this.isUserLogin);
+    this.router.get("/logout", this.logout);
+    // this.router.post("/a", this.a);
+    this.router.post("/b", this.b);
+  }
+  // a(req: Request, res: Response, next: NextFunction) {
+  //   req.session.username = "asdasd";
+  //   console.log(req.session.username);
+  //   res.send("ok");
+  // }
+  b(req: Request, res: Response, next: NextFunction) {
+    res.send(req["session"].userId);
   }
   login(req: Request, res: Response, next: NextFunction) {
     let manager = new UserManager();
@@ -27,13 +40,25 @@ export class CountryController extends BaseRouter {
         if (
           securityManager.compareText(req.body.password, result[0].password)
         ) {
+          req["session"].userId = result[0]._id;
           delete result[0]._id;
           res.send(result[0]);
         } else res.status(500).send({ error: err });
       }
     });
   }
-  signup(req: Request, res: Response, next: NextFunction) {
+  logout(req: Request, res: Response, next: NextFunction) {
+    req["session"].destroy();
+    res.send("");
+  }
+  showMe(req: Request, res: Response, next: NextFunction) {
+    let manager = new UserManager();
+    manager.showMe(req["session"].userId, (error, response) => {
+      if (error) res.status(500).send({ error });
+      res.send(response);
+    });
+  }
+  signup(req, res: Response, next: NextFunction) {
     let manager = new UserManager(),
       error = [];
     if (req.body.password.length < 8) error.push("Password is too short");
@@ -83,22 +108,15 @@ export class CountryController extends BaseRouter {
   }
 
   search(req: Request, res: Response, next: NextFunction) {
-    let manager = new UserManager(),
-      securityManager = new Security(),
-      password = securityManager.generatePassword();
-    securityManager.hashText(password).then((hashedPassword: string) => {
-      manager.resetPassword(req.body.email, hashedPassword, function(
-        err,
-        result
-      ) {
-        if (err) res.status(500).send({ error: err });
-        else {
-          let emailManager = new EmailManager();
-          emailManager.sendEMail(req.body.email, "Reset Password", "asdasdasd");
-          res.send(result);
-        }
-      });
+    let manager = new UserManager();
+    manager.search(req.body.phrase, (err, result) => {
+      if (err) res.status(500).send({ error: err });
+      res.send(result);
     });
+  }
+  isUserLogin(req: Request, res: Response, next: NextFunction) {
+    if (req["session"].userId) res.send(true);
+    else res.send(false);
   }
 }
 const countryController = new CountryController();

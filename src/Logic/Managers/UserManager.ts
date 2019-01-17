@@ -1,5 +1,6 @@
 import { BaseRepository } from "../../Repositories/Base/BaseRepository";
 import { user } from "../../Common/Metadata/userMetadata";
+import { ObjectId } from "mongodb";
 
 export class UserManager extends BaseRepository<user> {
   constructor() {
@@ -24,6 +25,21 @@ export class UserManager extends BaseRepository<user> {
         this.update(result[0], callback);
       }
     });
+  }
+  search(phrase: string, callback: (error: any, result: any) => void) {
+    this.find(
+      {
+        $or: [
+          { firstName: new RegExp(".*" + phrase + ".*") },
+          { lastName: new RegExp(".*" + phrase + ".*") },
+          { username: new RegExp(".*" + phrase + ".*") }
+        ]
+      },
+      callback
+    );
+  }
+  showMe(userId: string, callback: (error: any, result: any) => void) {
+    this.find({ _id: ObjectId(userId) }, callback);
   }
 }
 Object.seal(UserManager);

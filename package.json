@@ -31,6 +31,7 @@
     "express-brute": "^1.0.1",
     "express-cassandra": "^2.2.3",
     "express-fileupload": "^1.1.1-alpha.1",
+    "express-session": "^1.15.6",
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "gulp": "^3.9.1",

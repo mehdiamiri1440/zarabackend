@@ -1,7 +1,9 @@
-var cors = require("cors");
+import * as cors from "cors";
 import * as express from "express";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
+
+import * as session from "express-session";
 
 import * as busboy from "connect-busboy"; //middleware for form/file upload
 import * as path from "path"; //used for file path
@@ -43,6 +45,13 @@ export class App {
     this.express.use(
       fileUpload({
         limits: { fileSize: 30 * 1024 * 1024 }
+      })
+    );
+    this.express.use(
+      session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: true
       })
     );
     // this.express.use(

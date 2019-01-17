@@ -1,7 +1,7 @@
 import { IUnitOfWork } from "../Contracts/IUnitOfWork";
 import { injectable } from "inversify";
 import DataAccess = require("./DataAccess");
-var ObjectId = require("mongodb").ObjectID;
+import { ObjectId } from "mongodb";
 
 @injectable()
 export class MongoDBUnitOfWork<T> implements IUnitOfWork<T> {
@@ -63,9 +63,7 @@ export class MongoDBUnitOfWork<T> implements IUnitOfWork<T> {
     callback: (error: any, result: any) => void
   ) {
     this._collection.collection(tableName, function(err, collection) {
-      console.log(entity);
-      entity.forEach(function(val, index) {
-        console.log(val);
+      entity.forEach(val => {
         let id = (<any>val)["_id"];
         delete (<any>val)["_id"];
         collection
